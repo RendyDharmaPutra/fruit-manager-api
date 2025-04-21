@@ -19,7 +19,7 @@ export class AuthController {
       success: true,
       message: 'Berhasil mengautentikasi Pengguna',
       data: {
-        token: token,
+        token,
       },
     };
   }
