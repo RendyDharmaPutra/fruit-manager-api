@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './auth.dto';
-import { AuthValidationPipe } from './utils/auth_validation';
+import { CustomValidationPipe } from '../utils/auth_validation';
 
 @Controller('auth')
 export class AuthController {
@@ -10,7 +10,8 @@ export class AuthController {
   // Fungsi Login
   @Post() // Post Method, body request -> username & password
   async login(
-    @Body(new AuthValidationPipe('mengautentikasi Pengguna')) authDto: AuthDto,
+    @Body(new CustomValidationPipe('mengautentikasi Pengguna'))
+    authDto: AuthDto,
   ) {
     // Dikerjakan oleh Service
     const token = await this.service.login(authDto);

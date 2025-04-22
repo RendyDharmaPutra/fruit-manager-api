@@ -2,7 +2,7 @@ import { HttpStatus, ValidationError, ValidationPipe } from '@nestjs/common';
 import { CommonException } from 'src/common/exception/common_exception';
 
 // Custom Validation Pipe
-export class AuthValidationPipe extends ValidationPipe {
+export class CustomValidationPipe extends ValidationPipe {
   // Problem -> Nama Fitur yang sedang dijalankan
   constructor(private problem: string) {
     super({
