@@ -9,71 +9,71 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { FruitService } from './fruit.service';
-import { FruitDto } from './fruit.dto';
+import { FuelService } from './fuel.service';
 import { CustomValidationPipe } from 'src/utils/auth_validation';
+import { FuelDto } from './fuel.dto';
 
 @UseGuards(JwtAuthGuard) // Middleware Autentikasi -> Diperlukan token pada beader request
-@Controller('fruit')
-export class FruitController {
-  constructor(private service: FruitService) {}
+@Controller('fuel')
+export class FuelController {
+  constructor(private service: FuelService) {}
 
-  // Fungsi mengambil data Buah[]
+  // Fungsi mengambil data bensin[]
   @Get() // Get Method "/"
   async getAll(): Promise<SuccessResponseType<any[]>> {
-    const fruits = await this.service.findAll(); // Memanggil Service untuk membaca seluruh data Buah
+    const fuels = await this.service.findAll(); // Memanggil Service untuk membaca seluruh data bensin
 
     return {
       success: true,
-      message: 'Berhasil mendapatkan data buah',
+      message: 'Berhasil mendapatkan data bensin',
       data: {
-        data: fruits,
-        length: fruits.length,
+        data: fuels,
+        length: fuels.length,
       },
     };
   }
 
-  // Fungsi menambah data Buah
+  // Fungsi menambah data bensin
   @Post() // Post Method "/"
   async addFruit(
-    @Body() // new CustomValidationPipe('menambah data buah') // ? dinonaktifkan menyesuaikan state diagram
-    fruitDto: FruitDto,
+    @Body() // new CustomValidationPipe('menambah data bensin') // ? dinonaktifkan menyesuaikan state diagram
+    fuelDto: FuelDto,
   ): Promise<SuccessResponseType<null>> {
-    await this.service.saveFruit(fruitDto); // Mengirim data Buah untuk dikerjakan Service
+    await this.service.saveFuel(fuelDto); // Mengirim data bensin untuk dikerjakan Service
 
     return {
       success: true,
-      message: 'Berhasil menambah data buah',
+      message: 'Berhasil menambah data bensin',
       data: null,
     };
   }
 
-  // Fungsi mengupdate data Buah
+  // Fungsi mengupdate data bensin
   @Put(':id') // PUT Method "/fruit"
   async updateFruit(
     @Param('id') id: string,
     @Body()
-    fruitDto: FruitDto,
+    fuelDto: FuelDto,
   ): Promise<SuccessResponseType<null>> {
-    await this.service.updateFruit(+id, fruitDto);
+    await this.service.updateFuel(+id, fuelDto);
 
     return {
       success: true,
-      message: 'Berhasil memperbarui data buah',
+      message: 'Berhasil memperbarui data bensin',
       data: null,
     };
   }
 
-  // Fungsi menghapus data Buah
+  // Fungsi menghapus data bensin
   @Delete(':id') // DELETE Method "/fruit/:id"
   async deleteFruit(
     @Param('id') id: string,
   ): Promise<SuccessResponseType<null>> {
-    await this.service.deleteFruit(+id);
+    await this.service.deleteFuel(+id);
 
     return {
       success: true,
-      message: 'Berhasil menghapus data buah',
+      message: 'Berhasil menghapus data bensin',
       data: null,
     };
   }
