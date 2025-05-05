@@ -35,8 +35,8 @@ export class FuelController {
 
   // Fungsi menambah data bensin
   @Post() // Post Method "/"
-  async addFruit(
-    @Body() // new CustomValidationPipe('menambah data bensin') // ? dinonaktifkan menyesuaikan state diagram
+  async addFuel(
+    @Body(new CustomValidationPipe('menambah data bensin')) // new CustomValidationPipe('menambah data bensin') // ? dinonaktifkan menyesuaikan state diagram
     fuelDto: FuelDto,
   ): Promise<SuccessResponseType<null>> {
     await this.service.saveFuel(fuelDto); // Mengirim data bensin untuk dikerjakan Service
@@ -49,10 +49,10 @@ export class FuelController {
   }
 
   // Fungsi mengupdate data bensin
-  @Put(':id') // PUT Method "/fruit"
-  async updateFruit(
+  @Put(':id') // PUT Method "/fuel"
+  async updateFuel(
     @Param('id') id: string,
-    @Body()
+    @Body(new CustomValidationPipe('mengubah data bensin'))
     fuelDto: FuelDto,
   ): Promise<SuccessResponseType<null>> {
     await this.service.updateFuel(+id, fuelDto);
@@ -65,8 +65,8 @@ export class FuelController {
   }
 
   // Fungsi menghapus data bensin
-  @Delete(':id') // DELETE Method "/fruit/:id"
-  async deleteFruit(
+  @Delete(':id') // DELETE Method "/fuel/:id"
+  async deleteFuel(
     @Param('id') id: string,
   ): Promise<SuccessResponseType<null>> {
     await this.service.deleteFuel(+id);

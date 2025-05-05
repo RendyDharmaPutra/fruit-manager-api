@@ -36,7 +36,7 @@ export class FertilizerController {
   // Fungsi menambah data pupuk
   @Post() // Post Method "/"
   async addFertilizer(
-    @Body() // new CustomValidationPipe('menambah data pupuk') // ? dinonaktifkan menyesuaikan state diagram
+    @Body(new CustomValidationPipe('menambah data pupuk')) // new CustomValidationPipe('menambah data pupuk') // ? dinonaktifkan menyesuaikan state diagram
     fertilizerDto: FertilizerDto,
   ): Promise<SuccessResponseType<null>> {
     await this.service.saveFertilizer(fertilizerDto); // Mengirim data pupuk untuk dikerjakan Service
@@ -52,7 +52,7 @@ export class FertilizerController {
   @Put(':id') // PUT Method "/fertilizer/:id"
   async updateFertilizer(
     @Param('id') id: string,
-    @Body()
+    @Body(new CustomValidationPipe('mengubah data pupuk'))
     fertilizerDto: FertilizerDto,
   ): Promise<SuccessResponseType<null>> {
     await this.service.updateFertilizer(+id, fertilizerDto);

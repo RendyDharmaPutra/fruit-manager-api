@@ -36,7 +36,7 @@ export class FruitController {
   // Fungsi menambah data Buah
   @Post() // Post Method "/"
   async addFruit(
-    @Body() // new CustomValidationPipe('menambah data buah') // ? dinonaktifkan menyesuaikan state diagram
+    @Body(new CustomValidationPipe('menambah data buah')) //  // ? dinonaktifkan menyesuaikan state diagram
     fruitDto: FruitDto,
   ): Promise<SuccessResponseType<null>> {
     await this.service.saveFruit(fruitDto); // Mengirim data Buah untuk dikerjakan Service
@@ -52,7 +52,7 @@ export class FruitController {
   @Put(':id') // PUT Method "/fruit"
   async updateFruit(
     @Param('id') id: string,
-    @Body()
+    @Body(new CustomValidationPipe('menambah data buah'))
     fruitDto: FruitDto,
   ): Promise<SuccessResponseType<null>> {
     await this.service.updateFruit(+id, fruitDto);
