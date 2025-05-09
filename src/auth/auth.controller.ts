@@ -1,7 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './auth.dto';
 import { CustomValidationPipe } from '../utils/auth_validation';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -22,6 +23,16 @@ export class AuthController {
       data: {
         token,
       },
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/logout')
+  async logout() {
+    return {
+      success: true,
+      message: 'Berhasil melakukan logout',
+      data: null,
     };
   }
 }
