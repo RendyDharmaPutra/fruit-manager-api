@@ -9,6 +9,7 @@ import { FruitModule } from './fruit/fruit.module';
 import { FuelModule } from './fuel/fuel.module';
 import { FertilizerModule } from './fertilizer/fertilizer.module';
 import { FertilizerService } from './fertilizer/fertilizer.service';
+import { IncomeModule } from './income/income.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { FertilizerService } from './fertilizer/fertilizer.service';
     FruitModule,
     FuelModule,
     FertilizerModule,
+    IncomeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

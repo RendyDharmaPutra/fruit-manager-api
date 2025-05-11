@@ -12,6 +12,7 @@ import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { FruitService } from './fruit.service';
 import { FruitDto } from './fruit.dto';
 import { CustomValidationPipe } from 'src/utils/auth_validation';
+import { Fruit } from './fruit.entity';
 
 @UseGuards(JwtAuthGuard) // Middleware Autentikasi -> Diperlukan token pada beader request
 @Controller('fruit')
@@ -20,7 +21,7 @@ export class FruitController {
 
   // Fungsi mengambil data Buah[]
   @Get() // Get Method "/"
-  async getAll(): Promise<SuccessResponseType<any[]>> {
+  async getAll(): Promise<SuccessResponseType<Fruit[]>> {
     const fruits = await this.service.findAll(); // Memanggil Service untuk membaca seluruh data Buah
 
     return {
