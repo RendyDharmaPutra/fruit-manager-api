@@ -33,6 +33,19 @@ export class IncomeController {
     };
   }
 
+  @Get(':code')
+  async getIncome(
+    @Param('code') code: string,
+  ): Promise<SuccessResponseType<Income>> {
+    const income = await this.service.findOne(code);
+
+    return {
+      success: true,
+      message: 'Berhasil mendapatkan data pemasukan',
+      data: income,
+    };
+  }
+
   @Post()
   async addIncome(
     @Body(new CustomValidationPipe('menambah data pemasukan'))

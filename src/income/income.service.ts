@@ -29,6 +29,42 @@ export class IncomeService {
     }
   }
 
+  async findOne(code: string) {
+    try {
+      const income = await this.incomeRepo
+        .createQueryBuilder('income')
+        .leftJoinAndSelect('income.details', 'detail')
+        .leftJoinAndSelect('detail.fruit', 'fruit')
+        .where('income.code = :code', { code })
+        .andWhere('income.deletedAt IS NULL')
+        .select([
+          'income.code',
+          'income.transactionTime',
+          'income.totalPrice',
+          'income.distribution',
+          'detail.weight',
+          'detail.price',
+          'fruit.name',
+          'fruit.price',
+        ])
+        .getOne();
+
+      if (!income) {
+        throw new CommonException(
+          'Gagal mandapatkan data Pemasukan',
+          'Data Pemasukan tidak ditemukan',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return income;
+    } catch (e) {
+      if (e instanceof CommonException) throw e;
+
+      throw unhandledError('mendapatkan Pemasukan', e);
+    }
+  }
+
   async saveIncome(incomeDto: IncomeDto, userId: string) {
     const totalPrice = incomeDto.details.reduce(
       (acc, detail) => acc + detail.price,
