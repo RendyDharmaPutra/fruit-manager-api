@@ -8,8 +8,8 @@ import { UserModule } from './user/user.module';
 import { FruitModule } from './fruit/fruit.module';
 import { FuelModule } from './fuel/fuel.module';
 import { FertilizerModule } from './fertilizer/fertilizer.module';
-import { FertilizerService } from './fertilizer/fertilizer.service';
 import { IncomeModule } from './income/income.module';
+import { OutcomeModule } from './outcome/outcome.module';
 
 @Module({
   imports: [
@@ -34,6 +34,7 @@ import { IncomeModule } from './income/income.module';
     FuelModule,
     FertilizerModule,
     IncomeModule,
+    OutcomeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
