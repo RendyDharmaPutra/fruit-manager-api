@@ -1,4 +1,5 @@
 import {
+  ArrayMinSize,
   IsArray,
   IsDateString,
   IsNotEmpty,
@@ -15,5 +16,6 @@ export class OutcomeDto {
   @IsArray({ message: 'Detail transaksi harus berupa array' })
   @ValidateNested({ each: true })
   @Type(() => OutcomeDetailDto)
+  @ArrayMinSize(1, { message: 'Harus terdapat pupuk yang dipilih' })
   details: OutcomeDetailDto[];
 }

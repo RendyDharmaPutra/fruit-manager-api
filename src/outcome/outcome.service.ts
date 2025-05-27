@@ -72,9 +72,13 @@ export class OutcomeService {
     );
 
     try {
-      const countToday = await this.outcomeRepo.count({
-        where: { transactionTime: outcomeDto.transactionTime },
-      });
+      const countToday = await this.outcomeRepo
+        .createQueryBuilder('outcome')
+        .withDeleted()
+        .where('outcome.transactionTime = :transactionTime', {
+          transactionTime: outcomeDto.transactionTime,
+        })
+        .getCount();
 
       const code = generateCode(
         'OUT',
