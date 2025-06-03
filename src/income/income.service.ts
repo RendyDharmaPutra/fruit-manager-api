@@ -23,6 +23,7 @@ export class IncomeService {
       return this.incomeRepo.find({
         relations: [],
         select: ['id', 'code', 'distribution', 'totalPrice', 'transactionTime'],
+        order: { transactionTime: 'ASC' },
       });
     } catch (e) {
       throw unhandledError('mendapatkan Pemasukan', e);
@@ -66,15 +67,14 @@ export class IncomeService {
   }
 
   async saveIncome(incomeDto: IncomeDto, userId: string) {
-    const totalPrice = incomeDto.details.reduce(
-      (acc, detail) => acc + detail.price,
-      0,
-    );
-
     try {
-      const countToday = await this.incomeRepo.count({
-        where: { transactionTime: incomeDto.transactionTime },
-      });
+      const countToday = await this.incomeRepo
+        .createQueryBuilder('outcome')
+        .withDeleted()
+        .where('outcome.transactionTime = :transactionTime', {
+          transactionTime: incomeDto.transactionTime,
+        })
+        .getCount();
 
       const code = generateCode(
         'INC',
@@ -85,7 +85,7 @@ export class IncomeService {
       const income = this.createIncomeInstance({
         code,
         distribution: incomeDto.distribution,
-        totalPrice,
+        totalPrice: incomeDto.totalPrice,
         transactionTime: incomeDto.transactionTime,
         user: userId,
       });

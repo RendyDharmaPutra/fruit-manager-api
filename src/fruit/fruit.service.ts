@@ -19,7 +19,7 @@ export class FruitService {
       return this.repository.find(); // Membaca data buah dari Database
     } catch (e) {
       // Error Handling
-      throw unhandledError('mendapatkan Pengguna', e);
+      throw unhandledError('mendapatkan data Buah', e);
     }
   }
 

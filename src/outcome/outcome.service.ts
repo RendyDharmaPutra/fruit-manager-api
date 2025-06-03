@@ -24,6 +24,7 @@ export class OutcomeService {
       return this.outcomeRepo.find({
         relations: [],
         select: ['id', 'code', 'totalPrice', 'transactionTime'],
+        order: { transactionTime: 'ASC' },
       });
     } catch (e) {
       throw unhandledError('mendapatkan Pengeluaran', e);
