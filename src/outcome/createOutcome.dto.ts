@@ -3,6 +3,7 @@ import {
   IsArray,
   IsDateString,
   IsNotEmpty,
+  Min,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -12,6 +13,10 @@ export class OutcomeDto {
   @IsDateString()
   @IsNotEmpty({ message: 'Tanggal transaksi tidak boleh kosong' })
   transactionTime: Date;
+
+  @IsNotEmpty({ message: 'Total Harga tidak boleh kosong' })
+  @Min(1000, { message: 'Total Harga minimal Rp1000' })
+  totalPrice: number;
 
   @IsArray({ message: 'Detail transaksi harus berupa array' })
   @ValidateNested({ each: true })

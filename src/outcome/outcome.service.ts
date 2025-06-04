@@ -67,11 +67,6 @@ export class OutcomeService {
   }
 
   async saveOutcome(outcomeDto: OutcomeDto, userId: string) {
-    const totalPrice = outcomeDto.details.reduce(
-      (acc, detail) => acc + detail.price,
-      0,
-    );
-
     try {
       const countToday = await this.outcomeRepo
         .createQueryBuilder('outcome')
@@ -89,7 +84,7 @@ export class OutcomeService {
 
       const outcome = this.createOutcomeInstance({
         code,
-        totalPrice,
+        totalPrice: outcomeDto.totalPrice,
         transactionTime: outcomeDto.transactionTime,
         user: userId,
       });
