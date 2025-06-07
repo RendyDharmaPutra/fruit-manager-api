@@ -21,7 +21,7 @@ export class FuelController {
 
   // Fungsi mengambil data bensin[]
   @Get() // Get Method "/"
-  @Roles('MANAGER')
+  // @Roles('MANAGER')
   async getAll(): Promise<SuccessResponseType<any[]>> {
     const fuels = await this.service.findAll(); // Memanggil Service untuk membaca seluruh data bensin
 
