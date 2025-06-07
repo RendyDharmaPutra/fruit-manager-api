@@ -8,18 +8,20 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { OutcomeService } from './outcome.service';
 import { Outcome } from './outcome.entyty';
 import { CustomValidationPipe } from 'src/utils/auth_validation';
 import { OutcomeDto } from './createOutcome.dto';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(RolesGuard)
 @Controller('outcome')
 export class OutcomeController {
   constructor(private service: OutcomeService) {}
 
   @Get()
+  @Roles('MANAGER')
   async getAll(): Promise<SuccessResponseType<Outcome[]>> {
     const outcomes = await this.service.findAll();
 
@@ -34,6 +36,7 @@ export class OutcomeController {
   }
 
   @Get(':code')
+  @Roles('MANAGER')
   async getOutcome(
     @Param('code') code: string,
   ): Promise<SuccessResponseType<Outcome>> {
@@ -47,6 +50,7 @@ export class OutcomeController {
   }
 
   @Post()
+  @Roles('MANAGER')
   async addOutcome(
     @Body(new CustomValidationPipe('menambah data pengeluaran'))
     outcomeDto: OutcomeDto,
@@ -64,6 +68,7 @@ export class OutcomeController {
   }
 
   @Delete(':code')
+  @Roles('MANAGER')
   async deleteOutcome(
     @Param('code') code: string,
   ): Promise<SuccessResponseType<null>> {

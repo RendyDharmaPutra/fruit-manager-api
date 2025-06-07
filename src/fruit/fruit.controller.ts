@@ -8,13 +8,14 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { FruitService } from './fruit.service';
 import { FruitDto } from './fruit.dto';
 import { CustomValidationPipe } from 'src/utils/auth_validation';
 import { Fruit } from './fruit.entity';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
-@UseGuards(JwtAuthGuard) // Middleware Autentikasi -> Diperlukan token pada beader request
+@UseGuards(RolesGuard) // Middleware Autentikasi -> Diperlukan token pada beader request
 @Controller('fruit')
 export class FruitController {
   constructor(private service: FruitService) {}
@@ -36,6 +37,7 @@ export class FruitController {
 
   // Fungsi menambah data Buah
   @Post() // Post Method "/"
+  @Roles('MANAGER')
   async addFruit(
     @Body(new CustomValidationPipe('menambah data buah')) //  // ? dinonaktifkan menyesuaikan state diagram
     fruitDto: FruitDto,
@@ -51,6 +53,7 @@ export class FruitController {
 
   // Fungsi mengupdate data Buah
   @Put(':id') // PUT Method "/fruit"
+  @Roles('MANAGER')
   async updateFruit(
     @Param('id') id: string,
     @Body(new CustomValidationPipe('menambah data buah'))
@@ -67,6 +70,7 @@ export class FruitController {
 
   // Fungsi menghapus data Buah
   @Delete(':id') // DELETE Method "/fruit/:id"
+  @Roles('MANAGER')
   async deleteFruit(
     @Param('id') id: string,
   ): Promise<SuccessResponseType<null>> {

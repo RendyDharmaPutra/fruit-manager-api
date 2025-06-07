@@ -36,6 +36,7 @@ export class AuthService {
     // Buat isi JWT Token
     const payload = {
       sub: user.id,
+      role: user.role,
     };
 
     // Membuat JWT Token

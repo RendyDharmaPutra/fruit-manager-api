@@ -8,18 +8,20 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { FuelService } from './fuel.service';
 import { CustomValidationPipe } from 'src/utils/auth_validation';
 import { FuelDto } from './fuel.dto';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
-@UseGuards(JwtAuthGuard) // Middleware Autentikasi -> Diperlukan token pada beader request
 @Controller('fuel')
+@UseGuards(RolesGuard) // Middleware Autentikasi -> Diperlukan token pada beader request
 export class FuelController {
   constructor(private service: FuelService) {}
 
   // Fungsi mengambil data bensin[]
   @Get() // Get Method "/"
+  @Roles('MANAGER')
   async getAll(): Promise<SuccessResponseType<any[]>> {
     const fuels = await this.service.findAll(); // Memanggil Service untuk membaca seluruh data bensin
 
@@ -35,6 +37,7 @@ export class FuelController {
 
   // Fungsi menambah data bensin
   @Post() // Post Method "/"
+  @Roles('MANAGER')
   async addFuel(
     @Body(new CustomValidationPipe('menambah data bensin')) // new CustomValidationPipe('menambah data bensin') // ? dinonaktifkan menyesuaikan state diagram
     fuelDto: FuelDto,
@@ -50,6 +53,7 @@ export class FuelController {
 
   // Fungsi mengupdate data bensin
   @Put(':id') // PUT Method "/fuel"
+  @Roles('MANAGER')
   async updateFuel(
     @Param('id') id: string,
     @Body(new CustomValidationPipe('mengubah data bensin'))
@@ -66,6 +70,7 @@ export class FuelController {
 
   // Fungsi menghapus data bensin
   @Delete(':id') // DELETE Method "/fuel/:id"
+  @Roles('MANAGER')
   async deleteFuel(
     @Param('id') id: string,
   ): Promise<SuccessResponseType<null>> {

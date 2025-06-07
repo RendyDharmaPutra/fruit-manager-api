@@ -8,13 +8,14 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { IncomeService } from './income.service';
 import { Income } from './income.entyty';
 import { CustomValidationPipe } from 'src/utils/auth_validation';
 import { IncomeDto } from './createIncome.dto';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(RolesGuard)
 @Controller('income')
 export class IncomeController {
   constructor(private service: IncomeService) {}
@@ -47,6 +48,7 @@ export class IncomeController {
   }
 
   @Post()
+  @Roles('CASHIER')
   async addIncome(
     @Body(new CustomValidationPipe('menambah data pemasukan'))
     incomeDto: IncomeDto,
@@ -64,6 +66,7 @@ export class IncomeController {
   }
 
   @Delete(':code')
+  @Roles('MANAGER')
   async deleteIncome(
     @Param('code') code: string,
   ): Promise<SuccessResponseType<null>> {

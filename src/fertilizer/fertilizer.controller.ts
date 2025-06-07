@@ -8,18 +8,20 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { FertilizerService } from './fertilizer.service';
 import { CustomValidationPipe } from 'src/utils/auth_validation';
 import { FertilizerDto } from './fertilizer.dto';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
-@UseGuards(JwtAuthGuard) // Middleware Autentikasi -> Diperlukan token pada header request
+@UseGuards(RolesGuard) // Middleware Autentikasi -> Diperlukan token pada header request
 @Controller('fertilizer')
 export class FertilizerController {
   constructor(private service: FertilizerService) {}
 
   // Fungsi mengambil data pupuk[]
   @Get() // Get Method "/"
+  @Roles('MANAGER')
   async getAll(): Promise<SuccessResponseType<any[]>> {
     const fertilizers = await this.service.findAll(); // Memanggil Service untuk membaca seluruh data pupuk
 
@@ -35,6 +37,7 @@ export class FertilizerController {
 
   // Fungsi menambah data pupuk
   @Post() // Post Method "/"
+  @Roles('MANAGER')
   async addFertilizer(
     @Body(new CustomValidationPipe('menambah data pupuk')) // new CustomValidationPipe('menambah data pupuk') // ? dinonaktifkan menyesuaikan state diagram
     fertilizerDto: FertilizerDto,
@@ -50,6 +53,7 @@ export class FertilizerController {
 
   // Fungsi mengupdate data pupuk
   @Put(':id') // PUT Method "/fertilizer/:id"
+  @Roles('MANAGER')
   async updateFertilizer(
     @Param('id') id: string,
     @Body(new CustomValidationPipe('mengubah data pupuk'))
@@ -66,6 +70,7 @@ export class FertilizerController {
 
   // Fungsi menghapus data pupuk
   @Delete(':id') // DELETE Method "/fertilizer/:id"
+  @Roles('MANAGER')
   async deleteFertilizer(
     @Param('id') id: string,
   ): Promise<SuccessResponseType<null>> {
